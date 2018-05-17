@@ -1,0 +1,6 @@
+{
+  "globalDependencies": {
+    "gearLib": "file:typings/custom/gearLib.d.ts",
+    "vue.shim": "file:typings/custom/vue.shim.d.ts"
+  }
+}
