@@ -1,3 +1,33 @@
+推荐使用vs code开发
+从create-react-app脚手架的基础上改造，让vue可以通过typescript来学
+为什么使用TypeScript
+1. JavaScript的超集
+支持所有原生JavaScript的语法
+
+2. 强类型语言
+现在很多主流语言都是强类型的，而这点也一直是JavaScript所被人诟病的地方。使用TypeScript之后，将会在代码调试、重构等步骤节省很多时间。
+
+比如说：函数在返回值的时候可能经过复杂的操作，那我们如果想要知道这个值的结构就需要去仔细阅读这段代码。那如果有了TypeScript之后，直接就可以看到函数的返回值结构，将会非常的方便
+3. 强大的IDE支持
+现在的主流编辑器如VSCode、WebStorm、Atom、Sublime等都对TypeScript有着非常友好的支持，主要体现在智能提示上，非常的方便
+
+4. 可运行于任何浏览器、计算机、操作系统
+强大的编译引擎
+
+5. 迭代更新快
+不断更新，提供更加方便友好的Api
+
+6. 微软和Google爸爸
+TypeScript是微软开发的语言，而Google的Angular使用的就是TypeScript，所以不用担心会停止维护，至少在近几年内TypeScript都会一门主流开发语言
+
+7. npm下载量非常高
+截止2017.12.17, TypeScript在全球范围内的npm日均下载量在30w左右，这个数字将近是vue下载量的10倍，可见TypeScript还是非常受欢迎的
+
+
+sq: 可能有写库没有加入到package.json中，
+使用yarn start的启动的时候，如果报缺少库的错误，需要yarn add ** --save-dev 手动安装
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
