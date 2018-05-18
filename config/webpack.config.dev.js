@@ -14,6 +14,7 @@ const paths = require('./paths');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const tsImportPluginFactory = require('ts-import-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const { VueLoaderPlugin } = require('vue-loader');
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -95,14 +96,9 @@ module.exports = {
       '.json',
       '.web.jsx',
       '.jsx',
-      '.vue',
     ],
     alias: {
-      
-      // Support React Native Web
-      // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
-      'vue': 'vue/dist/vue.js',
+      'vue$': 'vue/dist/vue.esm.js',
       ...paths.third
     },
     plugins: [
@@ -129,6 +125,10 @@ module.exports = {
         include: paths.appSrc,
       },
       {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
         // back to the "file" loader at the end of the loader list.
@@ -144,15 +144,14 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
-          {
-            test: /\.vue$/,
-            loader: require.resolve('vue-loader')
-          },
           // Compile .tsx?
           {
             test: /\.(ts|tsx)$/,
             include: paths.appSrc,
             use: [
+              {
+                loader: require.resolve('babel-loader')
+              },
               {
                 loader: require.resolve('ts-loader'),
                 options: {
@@ -218,7 +217,7 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/],
+            exclude: [/\.js$/, /\.html$/, /\.json$/, /\.vue$/],
             loader: require.resolve('file-loader'),
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
@@ -235,6 +234,7 @@ module.exports = {
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     // In development, this will be an empty string.
+    // new VueLoaderPlugin(),
     new BundleAnalyzerPlugin(),
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.

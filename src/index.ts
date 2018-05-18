@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import G from './Gear';
-// import { window } from './core/Window';
+import { WindowUtil } from './utils';
+WindowUtil.extendPrototype();
 const SockJs = require('sockjs-client');
 let GearWeb:any = function(selector: string|object|Function) {
   return G.$.call(GearWeb, selector);

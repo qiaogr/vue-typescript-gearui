@@ -1,8 +1,8 @@
-import Tag, { TagProps } from '../Tag';
-import Vue from 'vue';
+import Tag, { TagProps } from 'src/components/Tag';
+import Vue, { CreateElement } from 'vue';
 import Component, { mixins } from 'vue-class-component';
 import { Button } from 'element-ui';
-import { Http } from '../../utils';
+import { Http } from 'src/utils';
 export var GbuttonProps = {
     url: String||Function,
     target: String,
@@ -20,18 +20,22 @@ export var GbuttonProps = {
     ghost: Boolean,
     iconalign: String,
     iconAlign: String,
-    width: Number,
-    height: Number,
+    // width: Number,
+    // height: Number,
     selected: Boolean,
     selectedtype: String,
     selectedType: String,
     plain: Boolean,
     group: String,
+    round: Boolean,
+    autofocus: Boolean,
+    nativeType: String,
     ...TagProps
 };
-Vue.use(Button);
 @Component({
-    template: '<el-button v-cloak :type="type" :disabled="disabled" @click="onClick">{{textNode}}</el-button>',
+    components: {
+        Button
+    },
     props: GbuttonProps
 })
 export default class GButton<P extends typeof GbuttonProps> extends mixins<Tag<typeof GbuttonProps>>(Tag) {
@@ -63,9 +67,38 @@ export default class GButton<P extends typeof GbuttonProps> extends mixins<Tag<t
                 Http.triggerHyperlink(url,target);
             }
         }
+        this.textNode = "aaa";
     }
     
     afterMounted() {
         this.textNode = this.text;
+    }
+
+    render(h: CreateElement) {
+        return <Button 
+                size={this.props.size} 
+                onClick={this.onClick} 
+                type={this.props.type}
+                plain={this.props.plain}
+                round={this.props.round}
+                circle={this.props.circle}
+                loading={this.props.loading}
+                disabled={this.props.disabled}
+                icon={this.props.icon}
+                autofocus={this.props.autofocus}
+                native-type={this.props.nativeType}
+            >{this.children}</Button>;
+    }
+
+    click(fun?: Function) {
+        if(fun) {
+            this.bind("click", fun);
+        }else {
+            if(this.realDom != null) {
+                G.G$(this.realDom).click();
+            }else {
+                this.onClick.call(this);
+            }
+        }
     }
 }

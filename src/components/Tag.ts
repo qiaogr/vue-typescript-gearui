@@ -20,6 +20,13 @@ export default class Tag<P extends typeof TagProps> extends mixins(JqueryTag) {
     }
 
     /**
+     * 对象创建完成之后触发
+     */
+    created() {
+        this.copyProps();
+    }
+
+    /**
      * 渲染之前调用
      */
     beforeMount() {
@@ -57,7 +64,6 @@ export default class Tag<P extends typeof TagProps> extends mixins(JqueryTag) {
     mounted() {
         this.initRealDom();
         this.bindVmDomOnRealDom();
-        this.copyProps();
         this.afterMounted();
     }
 

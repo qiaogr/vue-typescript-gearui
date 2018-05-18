@@ -134,6 +134,7 @@ export default class WindowUtil {
         }
 
         ele.eventList[eventType] = true;
+        return;
     }
 
     static getUserIdFromSession() {
@@ -199,5 +200,94 @@ export default class WindowUtil {
             }
         }
         return -1;
+    }
+
+    static extendPrototype() {
+        //扩展js原生方法
+        if (typeof String.prototype["startsWith"] != 'function') {  
+            String.prototype["startsWith"] = function (prefix: any){  
+               try {
+                    var reg = new RegExp("^" + prefix);
+                    return reg.test(this.toString());
+                } catch (e) {
+                    console.error("字符" + prefix + "可能需要转义");
+                }
+                return false;
+            };  
+        }
+        //扩展js原生方法
+        if (typeof String.prototype["endsWith"] != 'function') {  
+            String.prototype["endsWith"] = function (prefix: any){  
+                try {
+                    var reg = new RegExp(prefix + "$");
+                    return reg.test(this.toString());
+                } catch (e) {
+                    console.error("字符" + prefix + "可能需要转义");
+                }
+                return false;
+            };  
+        }
+        //扩展js原生方法
+        if (typeof Array.prototype["toStringBySeparator"] != 'function') { 
+            Array.prototype["toStringBySeparator"] = function (separator: any){  
+                var re = "";
+                for (var i = 0; i < this.length; i++) {
+                    if(re.length > 0) {
+                        re += separator;
+                    }
+                    re += this[i];
+                }
+                return re;
+            };  
+        }
+        //为数组增加contain方法，用于判断数组中是否存在传入值
+        if(typeof Array.prototype["contains"] != "function") {
+            Array.prototype["contains"] = function (val: any){
+                var i = this.length;  
+                while (i--) {
+                    if (this[i] === val) {  
+                        return true;  
+                    }  
+                }  
+                return false;                 
+            }
+        }
+
+        //为数组增加indexOf方法，用于判断数组中传入值的位置，返回-1则表示未的攻到
+        if (!Array["indexOf"]){
+            if(typeof Array.prototype["indexOf"] != "function") {
+                Array.prototype["indexOf"] = function (val){
+                    for (var i = 0; i < this.length; i++) {  
+                        if (this[i] == val) {  
+                            return i;  
+                        }  
+                    }  
+                    return -1;                 
+                }
+            }    
+        }    
+
+        if(typeof Date.prototype["format"] != "function") {
+            Date.prototype["format"] = function(fmt: any) { 
+                var o = { 
+                   "M+" : this.getMonth()+1,                 //月份 
+                   "d+" : this.getDate(),                    //日 
+                   "h+" : this.getHours(),                   //小时 
+                   "m+" : this.getMinutes(),                 //分 
+                   "s+" : this.getSeconds(),                 //秒 
+                   "q+" : Math.floor((this.getMonth()+3)/3), //季度 
+                   "S"  : this.getMilliseconds()             //毫秒 
+               }; 
+               if(/(y+)/.test(fmt)) {
+                       fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+               }
+                for(var k in o) {
+                   if(new RegExp("("+ k +")").test(fmt)){
+                        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+                    }
+                }
+               return fmt; 
+           } 
+        }
     }
 }

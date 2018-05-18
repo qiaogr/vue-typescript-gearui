@@ -33,7 +33,7 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div v-cloak id="root">
-      <g-button id="testbutton" type="success" disabled>ggg<span>ccc</span></g-button>
+      <g-button id="testbutton" type="success">ggg<span>ccc</span></g-button>
     </div>
     
     <!--
@@ -52,6 +52,6 @@
     G(function() {
       var button = G("#testbutton");
       // button.test();
-      console.log(button);
+      button.click();
     })
   </script>

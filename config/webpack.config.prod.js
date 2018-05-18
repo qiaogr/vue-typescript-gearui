@@ -75,6 +75,9 @@ module.exports = {
         .relative(paths.appSrc, info.absoluteResourcePath)
         .replace(/\\/g, '/'),
   },
+  externals: {
+    "jquery": "window.$"
+  },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
@@ -100,14 +103,10 @@ module.exports = {
       '.js',
       '.json',
       '.web.jsx',
-      '.jsx',
+      '.jsx'
     ],
     alias: {
-      
-      // Support React Native Web
-      // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
-      'vue': 'vue/dist/vue.min.js',
+      'vue$': 'vue/dist/vue.esm.js',
       ...paths.third
     },
     plugins: [
@@ -133,6 +132,10 @@ module.exports = {
         include: paths.appSrc,
       },
       {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
         // back to the "file" loader at the end of the loader list.
@@ -147,15 +150,14 @@ module.exports = {
               name: 'static/media/[name].[hash:8].[ext]',
             },
           },
-          {
-            test: /\.vue$/,
-            loader: require.resolve('vue-loader')
-          },
           // Compile .tsx?
           {
             test: /\.(ts|tsx)$/,
             include: paths.appSrc,
             use: [
+              {
+                loader: require.resolve('babel-loader')
+              },
               {
                 loader: require.resolve('ts-loader'),
                 options: {
@@ -243,7 +245,7 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/],
+            exclude: [/\.js$/, /\.html$/, /\.json$/, /\.vue$/],
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },

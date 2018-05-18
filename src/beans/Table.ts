@@ -10,7 +10,7 @@ export default class Table {
     private index: number;
     private initTdSize: number;
 
-    readonly style:React.CSSProperties = {
+    readonly style = {
         margin: '0 auto'
     };
 
@@ -108,8 +108,8 @@ export class Tr {
     next: Tr;
     prev: Tr;
 
-    private first: Td;
-    private last: Td;
+    // private first: Td;
+    // private last: Td;
 
     private trIndex: number;
 
@@ -134,8 +134,8 @@ export class Tr {
             let td = new Td(this, this.trIndex,i);
             this.tds.push(td);
         }
-        this.first = this.tds[0];
-        this.last = this.tds[this.tds.length - 1];
+        // this.first = this.tds[0];
+        // this.last = this.tds[this.tds.length - 1];
     }
 
     getTds() {
@@ -152,13 +152,13 @@ export class Tr {
     allRowspanEq() {
         let rowspan: any = null;
         let eq = true;
-        this.tds.forEach((td)=>{
+        this.tds.forEach((td: Td)=>{
             if(rowspan == null) {
                 rowspan = td.getRowspan();
             }else {
                 if(rowspan != td.getRowspan()) {
                     eq = false;
-                    return eq;
+                    //return eq;
                 }
             }
         });
@@ -400,7 +400,7 @@ export class Td {
     removeNext() {
         let next = this.next;
 
-        let nextPrev = next.prev;
+        // let nextPrev = next.prev;
         this.next = next.next;
         if(next.next) {
             next.next.prev = this;

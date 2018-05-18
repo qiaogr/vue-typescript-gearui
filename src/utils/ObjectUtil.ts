@@ -182,7 +182,7 @@ export default class ObjectUtil {
      * @param key 如果存在，代表数组中元素的一个key
      */
     static sort(arr: Array<any>,desc: boolean, key?: string) {
-        let tmp = null;
+        // let tmp = null;
         for(let i=0; i < arr.length; i++) {
             for(let j=i; j < arr.length; j++) {
                 let tempJ = arr[j];
